@@ -1,0 +1,6 @@
+---
+- hosts: qe-perf-ansible-test
+
+
+  roles:
+    - influxdb
