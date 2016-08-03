@@ -1,0 +1,23 @@
+---
+# tasks file for webpagetest
+# Objective of this task file is to install and start apache2 http server
+- name: Update apt cache
+  apt: update_cache=yes cache_valid_time=3600
+  sudo: yes
+
+- name: Download Apache2 http server and enable modules
+  apt: name=apache2
+  sudo: True
+
+- name: Enable modules - rewrite, headers, and expires
+  apache2_module: 
+    state: present
+    update_cache: yes
+  with_items:
+    - rewrite
+    - headers
+    - expires
+
+- name: Restart apache2
+  service: name=apache2 state=restart
+...

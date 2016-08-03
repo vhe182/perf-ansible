@@ -1,2 +1,7 @@
 ---
 # vars file for webpagetest
+webpagetest_downloadsite: "https://github.com/WPO-Foundation/webpagetest/archive/WebPageTest-2.19.tar.gz"
+apache_config_file: "/etc/apache2/sites-enabled-000-default.conf"
+apache_config_file_new_dir: "/var/www"
+upload_max_filesize: "15M"
+post_max_size: "15M"

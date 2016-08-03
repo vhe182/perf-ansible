@@ -1,2 +1,23 @@
 ---
 # tasks file for webpagetest
+# Objective of this task file is to install and start webpagetest server
+- name: Update apt cache
+  apt: update_cache=yes cache_valid_time=3600
+  sudo: yes
+
+- name: Download WebPageTest tar.gz 
+  sudo: True
+  get_url: url= {{ webpagetest_downloadsite }}
+
+- include: tasks/apache.yml
+
+- include: tasks/php.yml
+
+- name: Change DocumentRoot in Apache2 config file
+  lineinfile: dest={{ apache_config_file }} regexp='DocumentRoot' line='DocumentRoot {{ apache_config_file_new_dir}}' backup=yes
+
+- name:  Change upload and post max file sizes for php.ini
+
+- name: Restart apache2
+  service: name=apache2 state=restarted
+...

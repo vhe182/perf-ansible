@@ -1,0 +1,44 @@
+---
+# Objective of this task file is to install php server and its dependencies
+# This is dependent on 
+- name: Update apt cache
+  apt: update_cache=yes
+
+- name: Check if Apache2 is installed
+  stat: path=/etc/init.d/apache2
+  register: apache2_status
+
+- include: tasks/apache.yml
+  when: apache2_status.stat.exists
+
+- name: Install php, php-gd, php-zip, php-curl, php-sqlite3
+  sudo: True
+  apt: name={{ item }} state=installed update_cache=yes
+  with_items: 
+    - php
+    - php-gd
+    - php-zip
+    - php-curl
+    - php-sqlite3
+    - ffmpeg
+
+- name: Enable php, php-gd, php-zip, php-curl, php-sqlite3
+  sudo: True
+  apache2_module: name={{ item }} state=present 
+  with_items:
+    - php
+    - php-gd
+    - php-zip
+    - php-curl
+    - php-sqlite3
+    - ffmpeg
+    - libjpeg-progs
+    - php-apc
+    - imagemagick
+    - libapache2-mod-php5
+    - libimage-exiftool-perl
+
+- name: Restarting apache2 http server 
+  sudo: True
+  service: name=apache2 state=restarted
+...
